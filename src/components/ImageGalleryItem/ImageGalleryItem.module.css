@@ -1,0 +1,10 @@
+.Item {
+  height: 260px;
+  object-fit: cover;
+  width: 100%;
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.Item:hover {
+  transform: scale(1.02);
+}

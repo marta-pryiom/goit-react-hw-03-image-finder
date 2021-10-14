@@ -1,0 +1,18 @@
+.Searchbar {
+  background: url(https://cdn.pixabay.com/photo/2017/08/12/23/29/background-texture-2635740_960_720.jpg)
+    no-repeat;
+  background-size: 100%;
+
+  padding: 25px;
+}
+.SearchFormButton {
+  font-size: 25px;
+  padding: 10px;
+  border-radius: 5px;
+  margin-right: 30px;
+  background-color: rgb(243, 67, 47);
+  color: seashell;
+}
+.SearchFormInput {
+  padding: 10px;
+}
