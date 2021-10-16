@@ -7,7 +7,7 @@ export default function ImageGallery({ images, onModalClick }) {
     <ul className={s.ImageGallery}>
       {images.map(el => (
         <li className={s.ImageGalleryItem} key={el.id}>
-          <ImageGalleryItem img={el} onOpenModal={onModalClick} />
+          <ImageGalleryItem img={el} onModalClick={onModalClick} />
         </li>
       ))}
     </ul>

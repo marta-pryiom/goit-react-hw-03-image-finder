@@ -14,8 +14,7 @@ export default class App extends Component {
   state = {
     images: [],
     searchItem: '',
-    // modalImageUrl: '',
-    // tag: '',
+    largeImage: {},
     page: 1,
     loading: false,
     showModal: false,
@@ -62,19 +61,16 @@ export default class App extends Component {
       showModal: !showModal,
     }));
   };
-  onOpenImageClick = modalImageUrl => {
-    // if (e.target.Nodename !== 'IMG') {
-    //   return;
-    // }
+  onOpenImageClick = largeImage => {
     this.setState({
-      modalImageUrl,
+      largeImage,
     });
-    console.log(this.state.modalImageUrl);
+    console.log(this.state.largeImage);
     this.toggleModal();
   };
 
   render() {
-    const { modalImageUrl, images, loading, showModal } = this.state;
+    const { largeImage, images, loading, showModal } = this.state;
     return (
       <Container>
         <ToastContainer />
@@ -85,11 +81,7 @@ export default class App extends Component {
         {showModal && (
           <Modal onClose={this.toggleModal}>
             <h1>hello</h1>
-            <img
-              src={modalImageUrl.largeImageURL}
-              alt={modalImageUrl.tag}
-              id={modalImageUrl.id}
-            />
+            <img src={largeImage.largeImageURL} alt={largeImage.tags} />
           </Modal>
         )}
       </Container>
