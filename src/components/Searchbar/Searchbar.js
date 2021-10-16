@@ -1,8 +1,7 @@
 import { Component } from 'react';
+import { toast } from 'react-toastify';
 // import PropTypes from 'prop-types';
 import s from './Searchbar.module.css';
-import '@pnotify/core/dist/BrightTheme.css';
-import { alert } from '@pnotify/core';
 export default class Searchbar extends Component {
   state = {
     searchItem: '',
@@ -16,10 +15,12 @@ export default class Searchbar extends Component {
   hendleSubmit = e => {
     e.preventDefault();
     if (this.state.searchItem.trim() === '') {
-      alert({
-        text: 'Enter a word to search for!',
-        delay: 500,
-      });
+      toast.error('Enter a word to search for!');
+
+      // alert({
+      //   text: 'Enter a word to search for!',
+      //   delay: 500,
+      // });
     }
     this.props.onSubmit(this.state.searchItem);
     this.reset();
