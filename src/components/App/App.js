@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import * as basicLightbox from 'basiclightbox';
 import Searchbar from '../Searchbar';
 import ImageGallery from '../ImageGallery';
@@ -13,9 +14,8 @@ export default class App extends Component {
   state = {
     images: [],
     searchItem: '',
-    query: '',
-    modalImageUrl: '',
-    tag: '',
+    // modalImageUrl: '',
+    // tag: '',
     page: 1,
     loading: false,
     showModal: false,
@@ -23,26 +23,24 @@ export default class App extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.searchItem !== prevState.searchItem) {
       this.setState({ loading: true });
-      setTimeout(() => {
-        this.fetchSearchItem()
-          .catch(err => console.log(err))
-          .finally(() => this.setState({ loading: false }));
-      }, 2000);
+      this.fetchSearchItem()
+        .catch(err => console.log(err))
+        .finally(() => this.setState({ loading: false }));
     }
   }
   fetchSearchItem() {
-    const { query, page } = this.state;
-    return getImages(query, page).then(images => {
+    const { searchItem, page } = this.state;
+    return getImages(searchItem, page).then(images => {
       this.setState(prev => ({
         images: [...prev.images, ...images],
         page: prev.page + 1,
       }));
     });
   }
-  handleFormSubmit = query => {
+  handleFormSubmit = searchItem => {
     this.setState({
       page: 1,
-      searchItem: query,
+      searchItem,
       images: [],
     });
   };
@@ -59,38 +57,40 @@ export default class App extends Component {
         .then(() => this.setState({ loading: false }));
     }, 2000);
   };
-  toggleModal = modalImageUrl => {
+  toggleModal = () => {
     this.setState(({ showModal }) => ({
       showModal: !showModal,
-      modalImageUrl,
     }));
   };
-  // onOpenImageClick = e => {
-  //   if (e.target.Nodename !== 'IMG') {
-  //     return;
-  //   }
-  //   this.toggleModal();
-  // };
+  onOpenImageClick = modalImageUrl => {
+    // if (e.target.Nodename !== 'IMG') {
+    //   return;
+    // }
+    this.setState({
+      modalImageUrl,
+    });
+    console.log(this.state.modalImageUrl);
+    this.toggleModal();
+  };
 
   render() {
+    const { modalImageUrl, images, loading, showModal } = this.state;
     return (
       <Container>
         <ToastContainer />
         <Searchbar onSubmit={this.handleFormSubmit} />
-
-        <ImageGallery
-          images={this.state.images}
-          onModalClick={this.toggleModal}
-        />
-        {this.state.loading && <Loader />}
-        {this.state.images.length > 0 && (
-          <Button onClick={this.handleBtnLoadMoreClick} />
-        )}
-        {this.state.showModal && (
-          <Modal
-            onClose={this.toggleModal}
-            modalImageUrl={this.state.modalImageUrl}
-          ></Modal>
+        <ImageGallery images={images} onModalClick={this.onOpenImageClick} />
+        {loading && <Loader />}
+        {images.length > 0 && <Button onClick={this.handleBtnLoadMoreClick} />}
+        {showModal && (
+          <Modal onClose={this.toggleModal}>
+            <h1>hello</h1>
+            <img
+              src={modalImageUrl.largeImageURL}
+              alt={modalImageUrl.tag}
+              id={modalImageUrl.id}
+            />
+          </Modal>
         )}
       </Container>
     );
