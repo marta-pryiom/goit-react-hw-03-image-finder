@@ -45,16 +45,15 @@ export default class App extends Component {
   };
   handleBtnLoadMoreClick = () => {
     this.setState({ loading: true });
-    setTimeout(() => {
-      this.fetchSearchItem()
-        .then(() => {
-          window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: 'smooth',
-          });
-        })
-        .then(() => this.setState({ loading: false }));
-    }, 2000);
+
+    this.fetchSearchItem()
+      .then(() => {
+        window.scrollTo({
+          top: document.documentElement.scrollHeight,
+          behavior: 'smooth',
+        });
+      })
+      .then(() => this.setState({ loading: false }));
   };
   toggleModal = () => {
     this.setState(({ showModal }) => ({
@@ -62,26 +61,37 @@ export default class App extends Component {
     }));
   };
   onOpenImageClick = largeImage => {
+    // this.setState({ loading: true });
     this.setState({
+      loading: true,
       largeImage,
     });
     console.log(this.state.largeImage);
     this.toggleModal();
+    this.setState({ loading: false });
   };
 
   render() {
-    const { largeImage, images, loading, showModal } = this.state;
+    const { searchItem, largeImage, images, loading, showModal } = this.state;
     return (
       <Container>
         <ToastContainer />
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={images} onModalClick={this.onOpenImageClick} />
+        {images.length !== 0 ? (
+          <ImageGallery images={images} onModalClick={this.onOpenImageClick} />
+        ) : (
+          searchItem !== '' && <h1>Nothing was found</h1>
+        )}
         {loading && <Loader />}
         {images.length > 0 && <Button onClick={this.handleBtnLoadMoreClick} />}
         {showModal && (
           <Modal onClose={this.toggleModal}>
-            <h1>hello</h1>
-            <img src={largeImage.largeImageURL} alt={largeImage.tags} />
+            {loading && <Loader />}
+            <img
+              src={largeImage.largeImageURL}
+              alt={largeImage.tags}
+              onClose={this.toggleModal}
+            />
           </Modal>
         )}
       </Container>
