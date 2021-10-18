@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import * as basicLightbox from 'basiclightbox';
 import Searchbar from '../Searchbar';
 import ImageGallery from '../ImageGallery';
 import { getImages } from '../../Service';
@@ -53,7 +52,8 @@ export default class App extends Component {
           behavior: 'smooth',
         });
       })
-      .then(() => this.setState({ loading: false }));
+      .catch(err => console.log(err))
+      .finally(() => this.setState({ loading: false }));
   };
   toggleModal = () => {
     this.setState(({ showModal }) => ({
@@ -61,7 +61,6 @@ export default class App extends Component {
     }));
   };
   onOpenImageClick = largeImage => {
-    // this.setState({ loading: true });
     this.setState({
       loading: true,
       largeImage,
